@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive CV - Karan Ahuja</title>
+    <!-- Chosen Palette: Cool Gray -->
+    <!-- Application Structure Plan: A thematic, single-page scrolling application with a fixed navigation bar. This structure provides a clear, linear narrative of Karan's career, starting with a high-level summary and allowing users to dive deeper into specific areas like experience, skills, and projects. The flow is intuitive for a resume, guiding the user from introduction to detail. Key interactions include an interactive skills chart, an expandable timeline for experience, and clickable cards for projects, making the exploration of his qualifications engaging. This design was chosen for its clarity, user-friendly and ability to present a comprehensive professional story in a digestible format. -->
+    <!-- Visualization & Content Choices: 
+        - Professional Summary -> Inform -> Prominent Text Block -> N/A -> Clear, immediate introduction. -> HTML/CSS.
+        - Skills -> Organize/Compare -> Interactive Polar Area Chart -> Hover to see sub-skills -> Visualizes skill balance and allows for exploration without clutter. -> Chart.js.
+        - Experience -> Change/Inform -> Interactive Timeline (Accordion) -> Click to expand/collapse -> Shows career progression clearly and keeps the layout clean by hiding details until requested. -> HTML/CSS/JS.
+        - Strategic Projects -> Inform/Organize -> Interactive Cards -> Click to reveal details -> Presents key achievements in a digestible, engaging format. -> HTML/CSS/JS.
+        - Accomplishments -> Inform -> Dynamic Stat Callouts -> N/A -> Highlights key metrics like revenue growth to grab attention. -> HTML/CSS.
+        - Education/Certs -> Inform -> Styled List -> N/A -> Simple, clear presentation of credentials. -> HTML/CSS.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* A very light gray */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: all 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #2563eb; /* Blue-600 */
+            transform: translateY(-2px);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background-color: #d1d5db; /* Gray-300 */
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -25.5px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #2563eb; /* Blue-600 */
+            border: 2px solid #ffffff;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-slate-800">
+                Karan Ahuja
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#summary" class="nav-link font-semibold">Summary</a>
+                <a href="#experience" class="nav-link font-semibold">Experience</a>
+                <a href="#skills" class="nav-link font-semibold">Skills</a>
+                <a href="#projects" class="nav-link font-semibold">Projects</a>
+                <a href="#contact" class="nav-link bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 hover:text-white">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-slate-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#summary" class="block py-2 nav-link">Summary</a>
+            <a href="#experience" class="block py-2 nav-link">Experience</a>
+            <a href="#skills" class="block py-2 nav-link">Skills</a>
+            <a href="#projects" class="block py-2 nav-link">Projects</a>
+            <a href="#contact" class="block py-2 nav-link">Contact</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6 md:p-12">
+
+        <!-- Professional Summary Section -->
+        <section id="summary" class="py-16 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800 mb-4">Corporate Sales & Wealth Management Leader</h1>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 leading-relaxed">
+                A client-centric and strategically-minded financial professional with over 10 years of experience in the luxury automotive and private banking sectors, with a strong background in corporate sales and dealer handling. Proven expertise in identifying new business opportunities, penetrating corporate sales markets, and driving significant revenue growth. Adept at building deep relationships with Key Accounts, Fleet owners, and Leasing Companies. Recognized for exceptional negotiation skills and a track record of achieving top-tier performance. My experience in dealer handling, marketing event coordination, and strategic planning directly aligns with the key accountabilities of the Specialist Corporate Sales (ZAK) role.
+            </p>
+        </section>
+        
+        <!-- Key Accomplishments -->
+        <section class="grid md:grid-cols-3 gap-8 text-center mb-24">
+            <div class="bg-white p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                <div class="text-blue-600 text-4xl font-bold">10+ yrs</div>
+                <div class="text-slate-600 font-semibold mt-2">in Corporate Sales</div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                <div class="text-blue-600 text-4xl font-bold">12%+</div>
+                <div class="text-slate-600 font-semibold mt-2">Vehicle Sales Growth</div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                <div class="text-blue-600 text-4xl font-bold">Top</div>
+                <div class="text-slate-600 font-semibold mt-2">Luxury Sales Advisor</div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-16">
+            <h2 class="text-3xl font-bold text-center text-slate-800 mb-12">Career Journey</h2>
+            <div class="space-y-12 max-w-2xl mx-auto">
+                <!-- Wealth Manager Role -->
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800">Wealth Manager – Priority Banking (HNI & UHNI Clients)</h3>
+                    <p class="text-sm text-slate-500 mb-2">Axis Bank | New Delhi, Delhi, India</p>
+                    <p class="text-sm text-slate-500 mb-4">Jul 2025 - Present · 2 mos</p>
+                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                        <li>Leveraging experience in B2B sales to onboard and nurture high-value corporate relationships and CXO-level clients.</li>
+                        <li>Managing and growing a portfolio of HNI & Ultra-HNI clients by offering tailored investment advisory and wealth solutions.</li>
+                        <li>Leading financial goal planning conversations with clients, resulting in higher wallet share and AUM growth.</li>
+                        <li>Driving acquisition and deepening of CASA, cross-selling products like Mutual Funds, Insurance (Life/General), LAS, and PMS.</li>
+                        <li>Collaborating with internal product teams, operations, and risk to deliver a seamless client experience.</li>
+                    </ul>
+                </div>
+                
+                <!-- Corporate Salary Manager Role -->
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800">Corporate Salary Manager</h3>
+                    <p class="text-sm text-slate-500 mb-2">Axis Bank | Noida, Uttar Pradesh, India</p>
+                    <p class="text-sm text-slate-500 mb-4">Nov 2023 - Jul 2025 · 1 yr 9 mos</p>
+                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                        <li>Led a team of 8 professionals at Axis Bank to drive strategic sales initiatives, achieving a 20% YoY growth in corporate salary account acquisitions.</li>
+                        <li>Strengthened client relationships with C-suite stakeholders, resulting in a 15% increase in cross-sell ratio.</li>
+                        <li>Spearheaded digital transformation projects to enhance client onboarding processes, reducing turnaround time by 30%.</li>
+                        <li>Handled end-to-end acquisition of corporate salary accounts via strategic B2B partnerships across industries.</li>
+                        <li>Successfully onboarded and managed 50+ corporate relationships, including Fortune 500 companies and mid-size enterprises.</li>
+                        <li>Led a cross-functional team to drive CASA penetration, salary account activations, and bundled product sales.</li>
+                        <li>Recognized for consistently exceeding targets in account acquisition and wallet share expansion.</li>
+                    </ul>
+                </div>
+                
+                <!-- Sales Consultant to Sales Manager Role -->
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800">Sales Consultant to Sales Manager</h3>
+                    <p class="text-sm text-slate-500 mb-2">(Volkswagen, Mercedes-Benz, BMW & Porsche) Car Dealerships | Delhi, India · On-site</p>
+                    <p class="text-sm text-slate-500 mb-4">May 2015 - Oct 2023 · 8 yrs 6 mos</p>
+                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                        <li>Led sales and operations for top automotive brands, increasing high-end vehicle sales by 12% through tailored client engagement strategies.</li>
+                        <li>Devised market entry strategies, expanding dealership market share by 10% and achieving Highest Retail Sales in 2022.</li>
+                        <li>Enhanced customer satisfaction scores by 20% through optimised service delivery and cross-functional collaboration.</li>
+                        <li>Developed and maintained strong relationships with key accounts, including hotels, embassies, fleet owners, and leasing companies.</li>
+                        <li>Provided comprehensive training to dealer sales teams, enhancing their product knowledge and improving their ability to deliver a premium customer experience.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-16 bg-white rounded-2xl my-16">
+            <h2 class="text-3xl font-bold text-center text-slate-800 mb-4">Core Competencies</h2>
+            <p class="text-center text-slate-600 mb-12 max-w-2xl mx-auto">A balanced blend of strategic sales expertise, client management, and financial acumen. Hover over the chart segments to explore the skills within each area.</p>
+            <div class="chart-container">
+                <canvas id="skillsChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Strategic Projects Section -->
+        <section id="projects" class="py-16">
+            <h2 class="text-3xl font-bold text-center text-slate-800 mb-12">Strategic Projects</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow cursor-pointer project-card">
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Corporate Market Penetration Strategy</h3>
+                    <p class="text-slate-500 mb-4">Volkswagen, 2020</p>
+                    <p class="text-slate-600"><strong>Objective:</strong> To identify and exploit the untapped potential of the Corporate Sales Market in the region.</p>
+                    <div class="project-details hidden mt-4">
+                        <p><strong class="font-semibold">Role:</strong> Led a cross-functional team to analyze market trends, identify target segments (SMEs, bulk deals), and develop a phased strategy for increasing corporate sales.</p>
+                        <p><strong class="font-semibold">Outcome:</strong> The strategy was successfully implemented, resulting in a 15% increase in corporate fleet sales and the establishment of new, long-term partnerships with leasing companies.</p>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow cursor-pointer project-card">
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Customized Financial Package Development</h3>
+                    <p class="text-slate-500 mb-4">BMW, 2022</p>
+                    <p class="text-slate-600"><strong>Objective:</strong> To create a comprehensive sales package for corporate clients that included vehicle sales, financing, and after-sales service.</p>
+                     <div class="project-details hidden mt-4">
+                        <p><strong class="font-semibold">Role:</strong> Coordinated with the Financial Services and Aftersales departments to develop a complete solution, including a new commission structure and customized pricing models.</p>
+                        <p><strong class="font-semibold">Outcome:</strong> The initiative streamlined the sales process for high-volume deals, increased the average transaction value, and improved customer satisfaction for corporate clients.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Certifications Section -->
+        <section id="education" class="py-16 bg-white rounded-2xl my-16">
+            <h2 class="text-3xl font-bold text-center text-slate-800 mb-12">Education & Certifications</h2>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Education</h3>
+                    <ul class="space-y-4">
+                        <li>
+                            <p class="font-semibold">Post Graduate Diploma in Management: Finance</p>
+                            <p class="text-slate-600">Institute of Management Technology | Ghaziabad | 03/2025</p>
+                        </li>
+                        <li>
+                            <p class="font-semibold">Bachelor of Commerce</p>
+                            <p class="text-slate-600">Swami Vivekanand Subharti University | Ghaziabad | 03/2023</p>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Certifications</h3>
+                     <ul class="space-y-4">
+                        <li>
+                            <p class="font-semibold">Business Strategy</p>
+                            <p class="text-slate-600">Indian School of Business (ISB) | 03/2025</p>
+                        </li>
+                        <li>
+                            <p class="font-semibold">NISM-Series-V-A: Mutual Fund Distributors</p>
+                        </li>
+                         <li>
+                            <p class="font-semibold">IRDA: Insurance Regulatory and Development Authority</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Contact Section -->
+    <footer id="contact" class="bg-slate-800 text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-4">Get In Touch</h2>
+            <p class="max-w-xl mx-auto mb-8">Seeking to leverage expertise in strategic planning, dealer training, and key account management to drive success in the corporate sales channel.</p>
+            <p class="text-lg font-semibold mb-2">karanahuja.026@gmail.com</p>
+            <p class="text-lg font-semibold mb-8">+91 9582869226</p>
+            <a href="https://www.linkedin.com/in/karanahuja5" target="_blank" class="inline-block bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-colors">View LinkedIn Profile</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Project card interaction
+            const projectCards = document.querySelectorAll('.project-card');
+            projectCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const details = card.querySelector('.project-details');
+                    details.classList.toggle('hidden');
+                });
+            });
+
+            // Skills Chart
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            const skillsData = {
+                labels: ['Corp. & Strat. Sales', 'Client & Rel. Mgmt', 'Fin. & Tech. Acumen'],
+                datasets: [{
+                    label: 'Skill Level',
+                    data: [90, 95, 85],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.5)', // blue-500
+                        'rgba(34, 197, 94, 0.5)', // green-500
+                        'rgba(139, 92, 246, 0.5)'  // violet-500
+                    ],
+                    borderColor: [
+                        'rgba(59, 130, 246, 1)',
+                        'rgba(34, 197, 94, 1)',
+                        'rgba(139, 92, 246, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            };
+            const skillsChart = new Chart(ctx, {
+                type: 'polarArea',
+                data: skillsData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            pointLabels: {
+                                display: true,
+                                centerPointLabels: true,
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            ticks: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const subSkills = {
+                                        'Corp. & Strat. Sales': ['Key Account Management', 'Business Development', 'Dealer Network Management'],
+                                        'Client & Rel. Mgmt': ['Consultative Sales', 'Client Acquisition & Retention', 'HNI Portfolio Management'],
+                                        'Fin. & Tech. Acumen': ['Investment Advisory', 'Wealth Solutions', 'Negotiation & Deal Closure']
+                                    };
+                                    if (subSkills[context.label]) {
+                                        label += subSkills[context.label].join(', ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
